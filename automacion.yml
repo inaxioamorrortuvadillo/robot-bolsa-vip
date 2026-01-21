@@ -1,0 +1,22 @@
+name: Robot Bolsa Diario
+
+on:
+  schedule:
+    # Esto es a las 8:00 AM de España (7:00 AM UTC)
+    - cron: '0 7 * * *'
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - run: pip install -r requirements.txt
+      - name: Ejecutar robot
+        env:
+          MI_CORREO: ${{ secrets.MI_CORREO }}
+          MI_CLAVE: ${{ secrets.MI_CLAVE }}
+        run: python robot_vip.py
